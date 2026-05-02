@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 class SkySparkCleaner():
-    def __init__(self, raw_dir="../data/raw", clean_dir="../data/processed"):
+    def __init__(self, raw_dir="data/raw", clean_dir="data/processed"):
         self.raw_dir = Path(raw_dir)
         self.clean_dir = Path(clean_dir)
 
@@ -16,14 +16,14 @@ class SkySparkCleaner():
         return df.drop(columns=dupe_cols)
 
     def split_timestamp(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Add 'Date' and 'Time' columns by splitting ISO timestamp in column 'ts'.
-        Expects format: YYYY-MM-DDTHH:MM:SSZ
-        """
-        ts = df["ts"].astype(str)
+        ts_parsed = pd.to_datetime(
+            df["ts"].str.split(" ").str[0].str.replace("Z", "", regex=False),
+            format="%Y-%m-%dT%H:%M:%S",
+            errors="coerce"
+        )
 
-        df["Date"] = ts.str[8:10] + ts.str[5:7] + ts.str[0:4]
-        df["Time"] = ts.str.slice(ts.str.find("T") + 1, ts.str.find("Z"))
+        df["Date"] = ts_parsed.dt.strftime("%Y-%m-%d")
+        df["Time"] = ts_parsed.dt.strftime("%H:%M:%S")
 
         return df
 

@@ -78,7 +78,7 @@ class SkySparkCleaner():
 
     def run(self):
         """
-        Clean all raw CSV files and export them to clean directory.
+        Clean all raw CSV files and export them to processed directory.
         """
         for f in self.get_all_raw_files():
             self.clean_file(f)

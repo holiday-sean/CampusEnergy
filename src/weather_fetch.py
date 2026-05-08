@@ -80,10 +80,10 @@ class WeatherCollector():
         """
         curr_year = date.today().year
 
-        for curr_year in range(2021, curr_year, 1):
-            response = self.fetch_api_response(startDate = f"{curr_year}-01-01", endDate = f"{curr_year}-12-31")
+        for year in range(2021, curr_year, 1):
+            response = self.fetch_api_response(startDate = f"{year}-01-01", endDate = f"{year}-12-31")
             hourly_df = self.process_hourly_data(response)
-            self.export_file(hourly_df, curr_year)
+            self.export_file(hourly_df, year)
 
 if __name__ == "__main__":
     collector = WeatherCollector()

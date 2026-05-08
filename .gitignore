@@ -2,3 +2,6 @@
 .cache.sqlite
 .DS_Store
 data/processed
+src/weather_cleaner.py
+database.ini
+src/__pycache__/
